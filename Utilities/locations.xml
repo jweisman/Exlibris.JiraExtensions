@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<locations>
+  <location id="us">
+    <weekend>Saturday,Sunday</weekend>
+    <holidays>
+    	<year start="2010" end="2010">
+    		<holiday date="Jan 1" name="New Year's Day"/>
+		<holiday date="Jan 18" name="Martin Luther King"/>
+		<holiday date="Feb 15" name="Presidents Day"/>
+		<holiday date="May 31" name="Memorial Day"/>
+		<holiday date="Jul 4" name="Independence Day"/>
+		<holiday date="Jul 5" name="Independence Day Observed"/>
+		<holiday date="Sep 6" name="Labor Day"/>
+		<holiday date="Nov 25" name="Thanksgiving"/>
+		<holiday date="Nov 26" name="Thanksgiving (Fri)"/>
+		<holiday date="Dec 24" name="Christmas Eve"/>
+    	</year>
+    	<year start="2011" end="2011">
+    		<holiday date="Jan 1" name="New Year's Day"/>
+		<holiday date="Jan 17" name="Martin Luther King"/>
+		<holiday date="Feb 21" name="Presidents Day"/>
+		<holiday date="May 30" name="Memorial Day"/>
+		<holiday date="Jul 4" name="Independence Day"/>
+		<holiday date="Sep 5" name="Labor Day"/>
+		<holiday date="Oct 10" name="Colombus Day"/>
+		<holiday date="Nov 24" name="Thanksgiving"/>
+		<holiday date="Nov 25" name="Thanksgiving (Fri)"/>
+		<holiday date="Dec 26" name="Christmas"/>
+    	</year>
+    </holidays>
+    <installers>
+      <installer userName="jmitchell"/>
+      <installer userName="jlexau"/>
+    </installers>
+  </location>
+  <location id="il">
+    <weekend>Friday,Saturday</weekend>
+    <holidays>
+      <year start="2010" end="2010">
+        <holiday date="Feb 28" name="Purim"/>
+        <holiday date="Mar 30" name="Pesach I"/>
+        <holiday date="Apr 1" name="Pesach II"/>
+        <holiday date="Apr 2" name="Pesach III"/>
+        <holiday date="Apr 3" name="Pesach IV"/>
+        <holiday date="Apr 4" name="Pesach V"/>
+        <holiday date="Apr 5" name="Pesach VI"/>
+        <holiday date="Apr 6" name="Pesach VII"/>
+        <holiday date="Apr 20" name="Yom HaAtzmaut"/>
+        <holiday date="May 19" name="Shavuot"/>
+        <holiday date="Jul 20" name="Tish B'Av"/>
+        <holiday date="Sep 8" name="Rosh Hashana Eve"/>
+        <holiday date="Sep 9" name="Rosh Hashana I"/>
+        <holiday date="Sep 10" name="Rosh Hashana II"/>
+        <holiday date="Sep 18" name="Yom Kippur"/>
+	<holiday date="Sep 22" name="Sukkot Eve"/>
+        <holiday date="Sep 23" name="Sukkot I"/>
+        <holiday date="Sep 24" name="Sukkot II"/>
+        <holiday date="Sep 25" name="Sukkot III"/>
+        <holiday date="Sep 26" name="Sukkot IV"/>
+        <holiday date="Sep 27" name="Sukkot V"/>
+        <holiday date="Sep 28" name="Sukkot VI"/>
+        <holiday date="Sep 29" name="Sukkot VII"/>
+        <holiday date="Sep 30" name="Simchat Torah"/>
+      </year>
+      <year start="2011" end="2011">
+        <holiday date="Mar 20" name="Purim"/>
+        <holiday date="Apr 18" name="Pesach Eve"/>
+        <holiday date="Apr 19" name="Pesach I"/>
+        <holiday date="Apr 20" name="Pesach II"/>
+        <holiday date="Apr 21" name="Pesach III"/>
+        <holiday date="Apr 22" name="Pesach IV"/>
+        <holiday date="Apr 23" name="Pesach V"/>
+        <holiday date="Apr 24" name="Pesach VI"/>
+        <holiday date="Apr 25" name="Pesach VII"/>
+        <holiday date="May 10" name="Yom HaAtzmaut"/>
+        <holiday date="Jun 8" name="Shavuot"/>
+        <holiday date="Aug 9" name="Tish B'Av"/>
+        <holiday date="Sep 29" name="Rosh Hashana I"/>
+        <holiday date="Sep 30" name="Rosh Hashana II"/>
+        <holiday date="Oct 8" name="Yom Kippur"/>
+	<holiday date="Oct 12" name="Sukkot Eve"/>
+        <holiday date="Oct 13" name="Sukkot I"/>
+        <holiday date="Oct 14" name="Sukkot II"/>
+        <holiday date="Oct 15" name="Sukkot III"/>
+        <holiday date="Oct 16" name="Sukkot IV"/>
+        <holiday date="Oct 17" name="Sukkot V"/>
+        <holiday date="Oct 18" name="Sukkot VI"/>
+        <holiday date="Oct 19" name="Sukkot VII"/>
+        <holiday date="Oct 20" name="Simchat Torah"/>
+      </year>      
+    </holidays>
+    <installers>
+      <installer userName="alonk"/>
+      <installer userName="davidc"/>
+      <installer userName="ephraima"/>
+      <installer userName="joshw"/>
+      <installer userName="matanb"/>
+      <installer userName="menit"/>
+      <installer userName="michalh"/>
+      <installer userName="rudyy"/>
+      <installer userName="idani"/>
+      <installer userName="tomersha"/>
+    </installers>
+  </location>
+  <location id="de">
+    <weekend>Saturday,Sunday</weekend>
+    <holidays>
+    	<year start="2010" end="2011">
+    		<holiday date="Jan 1" name="New Year's Day"/>
+		<holiday date="Oct 3" name="German Unity Day"/>
+		<holiday date="Dec 24" name="Christmas Eve"/>
+		<holiday date="Dec 25" name="Christmas Day"/>
+		<holiday date="Dec 26" name="Boxer Day"/>
+    	</year>
+    </holidays>
+    <installers>
+      <installer userName="klause"/>
+    </installers>
+  </location>
+</locations>

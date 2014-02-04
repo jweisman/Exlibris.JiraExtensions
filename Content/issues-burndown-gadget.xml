@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Issues Burndown Chart" author_email="josh.weisman@exlibrisgroup.com" description="Shows a burndown chart based on number of issues."
+        directory_title="Issues Burndown Chart" author="Josh Weisman"
+        thumbnail="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-thumbnail.png">
+        <Require feature="minimessage" />
+        <Optional feature="dynamic-height" />
+    </ModulePrefs>
+    <UserPref name="project" display_name="Project" datatype="string" default_value="" urlparam="projectKey"/>
+    <UserPref name="version" display_name="Version" datatype="string" default_value="" urlparam="refresh" />
+    <UserPref name="refresh"
+       display_name="Refresh"
+       datatype="enum"
+       default_value="0"
+       urlparam="refresh">
+        <EnumValue value="1000" display_value="None"/>
+        <EnumValue value="1" display_value="1 minute"/>
+        <EnumValue value="15" display_value="15 minutes"/>
+        <EnumValue value="30" display_value="30 minutes"/>
+        <EnumValue value="60" display_value="60 minutes"/>
+        <EnumValue value="120" display_value="120 minutes"/>
+    </UserPref>
+    <Content type="url" href="http://il-iapps04.corp.exlibrisgroup.com:9090/jiraextensions/JiraGadgets/IssuesBurndownChart?projectKey=__UP_project__&amp;version=__UP_version__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>
+    <!--<Content type="url" href="http://localhost:2458/JiraGadgets/IssuesBurndownChart?projectKey=__UP_project__&amp;version=__UP_version__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>-->
+</Module>
