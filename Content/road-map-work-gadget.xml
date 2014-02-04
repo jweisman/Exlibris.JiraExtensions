@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Road Map by Work" author_email="josh.weisman@exlibrisgroup.com" description="Shows the Road Map gadget, with progress by work time rather than issues."
+      directory_title="Road Map by Work" author="Josh Weisman"
+      thumbnail="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-thumbnail.png">
+    <Require feature="minimessage" />
+    <Optional feature="dynamic-height" />
+  </ModulePrefs>
+  <UserPref name="project" display_name="Project Key" datatype="string" default_value="DPS" urlparam="project"/>
+  <UserPref name="username" display_name="Show only user's tasks" datatype="string" default_value="" urlparam="username"/>
+  <Content type="url" href="http://il-iapps04:9090/jiraextensions/RoadMapGadget?project=__UP_project__&amp;userName=__UP_username__"/>
+</Module>

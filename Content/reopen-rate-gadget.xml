@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Reopen Rate Chart" author_email="josh.weisman@exlibrisgroup.com" description="Shows a chart of the reopen rate for a specified project"
+      directory_title="Reopen Rate Chart" author="Josh Weisman"
+      thumbnail="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-thumbnail.png">
+    <Require feature="minimessage" />
+    <Optional feature="dynamic-height" />
+  </ModulePrefs>
+  <UserPref name="project" display_name="Project Key" datatype="string" default_value="DPS" urlparam="project"/>
+  <Content type="url" href="http://il-iapps04:9090/jiraextensions/ReopenRateGadget?project=__UP_project__"/>
+</Module>

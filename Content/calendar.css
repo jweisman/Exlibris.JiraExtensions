@@ -1,0 +1,57 @@
+﻿        body, h2, table, th, td
+        {
+            font-family: Calibri, Verdana;
+        }
+        table 
+        {
+	        border-width: 2px;
+	        border-spacing: 2px;
+	        border-style: solid;
+	        border-color: gray;
+	        border-collapse: collapse;
+	        background-color: white;
+        }
+        table th 
+        {
+            font-size: 12pt;
+	        border-width: 1px;
+	        padding: 4px;
+	        border-style: inset;
+	        border-color: black;
+	        background-color: white;
+	        -moz-border-radius: 0px 0px 0px 0px;
+        }
+        table td 
+        {
+            font-size: 10pt;
+	        border-width: 1px;
+	        padding: 4px;
+	        border-style: inset;
+	        border-color: black;
+	        background-color: white;
+	        -moz-border-radius: 0px 0px 0px 0px;
+	        vertical-align: top;
+        }
+        
+        .busy 
+        {
+            background-color: #3399FF;
+            vertical-align: top;
+            text-align: left;
+        }
+        
+                .outofoffice 
+        {
+            background-color: #CC66CC;
+        }
+        
+        .monthyr 
+        {
+            vertical-align:top;
+            font-weight: bold;
+            font-size: 12pt;
+        }
+        .weekend
+        {
+            background-color: Gray;
+        }
