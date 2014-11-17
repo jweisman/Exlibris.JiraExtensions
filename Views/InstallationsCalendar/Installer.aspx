@@ -47,7 +47,7 @@
 
 </head>
 <body>
-<div style="text-align:center"><img alt="ExLibris" src="http://il-iapps04:8181/s/522/3/_/images/exl/company_logo.gif" /><h1 style="font-family: Calibri, Verdana;"><%=displayName%> Installation Calendar</h1></div>
+<div style="text-align:center"><img alt="ExLibris" src="https://jira.exlibrisgroup.com/s/en_US-vyfjb7-1988229788/6258/5/_/jira-logo-scaled.png" /><h1 style="font-family: Calibri, Verdana;"><%=displayName%> Installation Calendar</h1></div>
 <%if (!String.IsNullOrEmpty(displayName))
   { %>
 <div style="text-align:center">

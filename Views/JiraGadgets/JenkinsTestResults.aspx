@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Jenkins Test Results for <%=Model.Title %></title>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
         google.load("visualization", "1", { packages: ["corechart"] });

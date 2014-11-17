@@ -20,6 +20,6 @@
         <EnumValue value="60" display_value="60 minutes"/>
         <EnumValue value="120" display_value="120 minutes"/>
     </UserPref>
-    <Content type="url" href="http://il-iapps04.corp.exlibrisgroup.com:9090/jiraextensions/JiraGadgets/IssuesBurndownChart?projectKey=__UP_project__&amp;version=__UP_version__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>
+    <Content type="url" href="https://jira.exlibrisgroup.com:9393/jiraextensions/JiraGadgets/IssuesBurndownChart?projectKey=__UP_project__&amp;version=__UP_version__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>
     <!--<Content type="url" href="http://localhost:2458/JiraGadgets/IssuesBurndownChart?projectKey=__UP_project__&amp;version=__UP_version__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>-->
 </Module>
