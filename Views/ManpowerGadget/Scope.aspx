@@ -21,10 +21,9 @@ td.summary { font-weight:bold }
 <h1>Scoping Report for <%=ViewData["projectName"] %></h1>
 
 <table border=1 cellpadding=3 cellspacing=2>
-    <tr><th>PR</th><th>Sprint</th><th>Manpower</th><th>Manpower Years</th><th>Total Days</th><th>Load %</th><th>Task Days</th><th>Task %</th><th>Story Days</th><th>Story %</th></tr>
+    <tr><th>Sprint</th><th>Manpower</th><th>Manpower Years</th><th>Total Days</th><th>Load %</th><th>Task Days</th><th>Task %</th><th>Story Days</th><th>Story %</th></tr>
     <% foreach( ExLibris.JiraExtensions.Models.ScopingVersion s in Model ) {     %>
         <tr>
-            <td><%= s.ParentVersion %></td>
             <td><%= s.Version %></td>
             <td><%= s.Manpower %></td>
             <td><%= s.ManpowerYears %></td>

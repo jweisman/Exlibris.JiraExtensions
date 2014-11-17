@@ -2,7 +2,7 @@
 <Module>
   <ModulePrefs title="Jenkins Test Results" author_email="josh.weisman@exlibrisgroup.com" description="Shows a chart of test results."
       directory_title="Jenkins Test Results" author="Josh Weisman"
-      thumbnail="http://labs.atlassian.com/svn/GADGETS/trunk/jira-issues/basic/jira-issues-thumbnail.png">
+      thumbnail="http://www.yolinux.com/TUTORIALS/images/Jenkins_logo.png">
     <Require feature="minimessage" />
     <Optional feature="dynamic-height" />
   </ModulePrefs>
@@ -21,6 +21,6 @@
         <EnumValue value="60" display_value="60 minutes"/>
         <EnumValue value="120" display_value="120 minutes"/>
     </UserPref>
-  <Content type="url" href="http://il-iapps04.corp.exlibrisgroup.com:9090/jiraextensions/JiraGadgets/JenkinsTestResults?jenkinsUrl=__UP_jenkinsUrl__&amp;numOfBuilds=__UP_numOfBuilds__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>
+  <Content type="url" href="https://jira.exlibrisgroup.com:9393/jiraextensions/JiraGadgets/JenkinsTestResults?jenkinsUrl=__UP_jenkinsUrl__&amp;numOfBuilds=__UP_numOfBuilds__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/>
   <!--  <Content type="url" href="http://localhost:2458/JiraGadgets/JenkinsTestResults?jenkinsUrl=__UP_jenkinsUrl__&amp;numOfBuilds=__UP_numOfBuilds__&amp;title=__UP_title__&amp;refresh=__UP_refresh__"/> -->
 </Module>

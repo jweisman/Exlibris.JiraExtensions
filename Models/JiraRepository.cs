@@ -547,25 +547,17 @@ namespace ExLibris.JiraExtensions.Models
         /// <returns>List of Scoping Versions</returns>
         public List<ScopingVersion> GetScoping(string projectId)
         {
-            string strsql = @"SELECT vp.description parentversion,
-                    vc.description childversion,
+            string strsql = @"SELECT v.vname,
                     sum(decode(i.issuetype,3, numbervalue,0)) taskdays,
                     sum(decode(i.issuetype,7, numbervalue,0)) storydays
-                    FROM projectversion vp,
-                    projectversion vc,
-                    versionhierarchy vh,
-                    customfieldvalue c,
+                    FROM customfieldvalue c,
                     jiraissue i,
-                    issuefixversionview f
-                    WHERE vh.parentid = vp.id
-                    AND vh.childid    = vc.id
-                    AND vc.project    = :projectid
-                    AND i.id          = c.issue
+                    issuefixversionview v
+                    WHERE i.id          = c.issue
                     AND i.project     = :projectid
-                    AND i.pkey        = f.pkey
-                    AND f.versionid   = vc.id
+                    AND i.id        = v.issueid
                     AND c.customfield =10132
-                    and nvl(vp.released,'false') <> 'true'
+                    and nvl(v.RELEASED,'false') <> 'true'
                     /* remove all migration tasks from calculation */
                     and i.id not in (select id from nodeassociation a, jiraissue i
                                     where a.association_type='IssueComponent'
@@ -573,12 +565,8 @@ namespace ExLibris.JiraExtensions.Models
                                     and a.sink_node_id in (
                                             select id from component where project = 10040 and instr(lower(cname),'migration') > 0) 
                                       )
-                    GROUP BY vp.description,
-                    vc.description,
-                    vp.sequence,
-                    vc.sequence
-                    ORDER BY vp.sequence,
-                    vc.sequence";
+                    GROUP BY v.vname, v.SEQUENCE
+                    ORDER BY v.sequence";
 
             OracleConnection cn = new OracleConnection(_connectionString);
             OracleCommand cmd = new OracleCommand(strsql, cn);
@@ -602,10 +590,10 @@ namespace ExLibris.JiraExtensions.Models
                     while (rdr.Read())
                     {
                         s = new ScopingVersion(manpowerXml);
-                        s.ParentVersion = rdr.GetString(0);
-                        s.Version = rdr.GetString(1);
-                        s.TaskDays = (Double)rdr.GetDecimal(2);
-                        s.StoryDays = (Double)rdr.GetDecimal(3);
+                        //s.ParentVersion = rdr.GetString(0);
+                        s.Version = rdr.IsDBNull(0) ? "No Version" : rdr.GetString(0);
+                        s.TaskDays = (Double)rdr.GetDecimal(1);
+                        s.StoryDays = (Double)rdr.GetDecimal(2);
                         l.Add(s);
 
                         // TODO: Change to better code?
