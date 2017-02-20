@@ -25,4 +25,11 @@
     <sprint name="1.0-201204 - Apr 2012 Release" manpower="2.26" target="2.82"/>
     <sprint name="1.0-201205 - May 2012 Release" manpower="2.26" target="2.82"/>
     <sprint name="1.0-201206 - June 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201207 - Jul 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201208 - Aug 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201209 - Sep 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201210 - Oct 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201211 - Nov 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201212 - Dec 2012 Release" manpower="2.26" target="2.82"/>
+    <sprint name="1.0-201301 - Jan 2013 Release" manpower="2.26" target="2.82"/>
 </manpower>

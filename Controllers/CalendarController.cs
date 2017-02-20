@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Net;
 using System.Xml;
 using System.Xml.Linq;
-using System.IO;
 using ExLibris.JiraExtensions.Utilities;
 using ExLibris.JiraExtensions.Models;
 using System.Configuration;
@@ -15,56 +14,24 @@ namespace ExLibris.JiraExtensions.Controllers
 {
     public class InstallationsCalendarController : Controller
     {
-
-        JiraRepository rc;
-
-        public InstallationsCalendarController()
-        {
-            rc = new JiraRepository();
-        }
+        //
+        // GET: /Calendar/
 
         public ActionResult Index()
         {
-            return RedirectToAction("Installations", new { project = "INST" });
-        }
-
-        public string Debug()
-        {
-            string response = "";
-            if (HttpRuntime.Cache.Get("jiratoken") == null)
-            {
-                response = "Null";
-            }
-            else
-            {
-                response = HttpRuntime.Cache.Get("jiratoken").ToString();
-            }
-
-            if (Request.QueryString["reset"] != null)
-            {
-                HttpRuntime.Cache.Remove("jiratoken");
-                response += "<br/>Cleared";
-            }
-            return response;
-        }
-
-        public ActionResult Installations(string id)
-        {
-            string project = Util.nvl(id, "INST");
-
             // Get installations from Jira
-            var installations = HttpRuntime.Cache.GetOrStore<IEnumerable<Installation>>("installations-" + project, 60,
-                 () => JiraRepository.GetInstallations(project));
+            var installations = HttpRuntime.Cache.GetOrStore<IEnumerable<Installation>>("installations",60,
+                 () => Util.GetInstallations());
 
             // Order by startdate, then username
             installations = installations.OrderBy(i => i.startDate).ThenBy(i => i.userName);
 
             CalendarViewModel model = new CalendarViewModel();
-            model.project = project;
             model.installations = installations.ToList<Installation>();
 
             // Get distinct list of installers
-            model.installers = JiraRepository.GetInstallers(project).ToList<Installer>();
+            model.installers = HttpRuntime.Cache.GetOrStore<IEnumerable<Installer>>("installers", 900,
+                 () => Util.GetInstallers()).ToList<Installer>();
 
             // Load locations xml, find installer
             XmlDocument locations = new XmlDocument();
@@ -85,20 +52,14 @@ namespace ExLibris.JiraExtensions.Controllers
                 else
                     i.weekend = "Saturday,Sunday";
             }
-
             return View(model);
-
         }
 
         public ActionResult Installer(string id)
         {
-
-            // **********************************
-            // ** Currently supports only INST **
-            // **********************************
-            string project = "INST";
-
-            var installers = JiraRepository.GetInstallers(project);
+           
+            var installers = HttpRuntime.Cache.GetOrStore<IEnumerable<Installer>>("installers", 900,
+                 () => Util.GetInstallers());
 
             string userName = id;
             if (String.IsNullOrEmpty(userName) && Request.Cookies["userName"] != null)
@@ -112,7 +73,6 @@ namespace ExLibris.JiraExtensions.Controllers
                     ViewData["displayName"] = installer.displayName;
                     // store username for GetInstallations method
                     Session["UserName"] = userName;
-                    Session["Project"] = project;
                     Response.Cookies.Add(new HttpCookie("userName") { Expires = DateTime.Now.AddDays(14), Value = userName }); // TODO: add path
                 }
             }
@@ -122,8 +82,6 @@ namespace ExLibris.JiraExtensions.Controllers
 
         public JsonResult GetInstallations(double start, double end)
         {
-            var project = Session["Project"] as string;
-            project = Util.nvl(project, "INST");
 
             var userName = Session["UserName"] as string;
             if (string.IsNullOrEmpty(userName))
@@ -135,56 +93,26 @@ namespace ExLibris.JiraExtensions.Controllers
             var toDate = Util.ConvertFromUnixTimestamp(end).AddDays(-2);
 
             // Get installations from Jira
-            var installations = HttpRuntime.Cache.GetOrStore<IEnumerable<Installation>>("installations-" + project, 60,
-                 () => JiraRepository.GetInstallations(project));
+            var installations = HttpRuntime.Cache.GetOrStore<IEnumerable<Installation>>("installations", 60,
+                 () => Util.GetInstallations());
 
-            var installList = from i in installations 
+            var installList = from i in installations
                               where i.userName == userName && i.startDate >= fromDate && i.endDate <= toDate
-                              select new 
+                              select new
                                   {
                                       id = i.key,
-                                      title = InstallationTitle(i),
+                                      title = String.Format("{0}: {1} {2} @ {3} [{4}]{5}",
+                                            i.key, i.product, i.installTask, i.customerCode, i.serviceIncident, 
+                                            !String.IsNullOrEmpty(i.environmentNotes) ? ", " + i.environmentNotes : ""),
                                       start = i.startDate.ToString("s"),
                                       end = i.endDate.ToString("s"),
                                       allDay = true,
-                                      // url = (String.IsNullOrEmpty(Util.SIUrl(i.serviceIncident))) ? i.link : Util.SIUrl(i.serviceIncident),
-                                      url = String.IsNullOrEmpty(Util.CaseUrl(i.cases)) ? i.link : Util.CaseUrl(i.cases[0]),
-                                      className =  (ValuedCustomer(i) ? "valuedCustomer" : "")
+                                      url = i.link
                                   };
 
             var rows = installList.ToArray();
             return Json(rows, JsonRequestBehavior.AllowGet);    
         }
-
-
-
-        #region Utilities
-        private static string InstallationTitle(Installation inst)
-        {
-            if (inst.GetType() == typeof(CustomerInstallation))
-            {
-                CustomerInstallation i = (CustomerInstallation)inst;
-                return String.Format("{0}: {1} {2} @ {3} [{4}]{5}",
-                                            i.key, i.product, i.installTask, i.customerCode, i.serviceIncident,
-                                            !String.IsNullOrEmpty(i.security) ? ", " + i.security : "");
-            }
-            else
-            {
-                return inst.summary;
-            }
-        }
-
-        private static bool ValuedCustomer(Installation inst)
-        {
-            if (inst.GetType() == typeof(CustomerInstallation))
-            {
-                CustomerInstallation i = (CustomerInstallation)inst;
-                return i.valuedCustomer;
-            }
-            return false;
-
-        }
-        #endregion
 
 
     }

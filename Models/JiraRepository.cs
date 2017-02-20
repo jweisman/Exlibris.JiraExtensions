@@ -7,6 +7,8 @@ using System.Xml.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Helpers;
+using System.Web.Script.Serialization;
 using Oracle.DataAccess.Client;
 using System.Data;
 using System.Configuration;
@@ -24,6 +26,7 @@ namespace ExLibris.JiraExtensions.Models
         static string _jiraUsername;
         static string _jiraPassword;
         static string _jiraPrefix;
+        static string _jiraRestPrefix = "rest/api/latest";
 
         public JiraRepository()
         {
@@ -51,10 +54,13 @@ namespace ExLibris.JiraExtensions.Models
             if (_jiraPrefix == null)
                 _jiraPrefix = ConfigurationManager.AppSettings["jiraPrefix"];
 
+            /*
             if (_jss == null)
             {
                 _jss = new JiraSoapServiceService();
+                _jss.Url = ConfigurationManager.AppSettings["jiraPrefix"] + "rpc/soap/jirasoapservice-v2?wsdl";
             }
+            
 
             // Handle token timeouts by holding them for only 10 minutes
             if (HttpRuntime.Cache.Get("jiratoken") == null)
@@ -65,6 +71,7 @@ namespace ExLibris.JiraExtensions.Models
             else
                 _token = HttpRuntime.Cache.Get("jiratoken").ToString();
 
+            */
         }
 
         public IEnumerable<Trip> GetTravel()
@@ -331,14 +338,9 @@ namespace ExLibris.JiraExtensions.Models
             if (String.IsNullOrEmpty(project))
                 throw new Exception("No project specified");
 
-            // Get intallations from JQL
-            List<RemoteIssue> issues = _jss.getIssuesFromJqlSearch(_token, String.Format("project = {0} and issueType = Installation and resolution = Unresolved and \"Start Date\" >= -14d", project), 1000).ToList();
-            IEnumerable<JiraIssue> jiraIssues = from i in issues
-                                                select new JiraIssue
-                                                {
-                                                    IssueKey = i.key,
-                                                    ResolutionDate = i.resolution == null ? DateTime.MaxValue : _jss.getResolutionDateById(_token, Int64.Parse(i.id))
-                                                };
+            string query = HttpUtility.UrlEncode(String.Format("project = {0} and issueType = Installation and resolution = Unresolved and \"Start Date\" >= -14d", project));
+            string fields = "key,resolutiondate,summary,components,customfield_10035,customfield_10036,assignee,customfield_10033,customfield_10021,customfield_10050,customfield_10070,customfield_10140,customfield_10091,customfield_10060,customfield_14800";
+            dynamic resp = JiraRestCall("/search?maxResults=1000&fields=" + fields + "&jql=" + query);
 
             IEnumerable<Installation> installations;
 
@@ -347,33 +349,12 @@ namespace ExLibris.JiraExtensions.Models
                 case "INST":
                     // Load valuable customers
                     List<string> valuableCustomers = System.IO.File.ReadAllLines(HttpContext.Current.Server.MapPath("~/Utilities/mvc.txt")).ToList();
+                    installations = JiraRestIssuesToInstallationList(resp["issues"], valuableCustomers);
 
-                    // Create object list
-                    installations = from i in issues
-                                    select new CustomerInstallation
-                                    {
-                                        key = i.key,
-                                        summary = i.summary,
-                                        link = String.Format("{0}{1}/{2}", _jiraPrefix, "browse", i.key),
-                                        startDateText = GetCustomFieldValue(i.customFieldValues, "customfield_10035"),
-                                        duration = (int)decimal.Parse(Util.nvl(GetCustomFieldValue(i.customFieldValues, "customfield_10036"), "1")),
-                                        userName = i.assignee,
-                                        product = i.components.Length > 0 ? i.components[0].name : "",
-                                        customerCode = i.summary,
-                                        installTask = GetCustomFieldValue(i.customFieldValues, "customfield_10033"),
-                                        serviceIncident = GetCustomFieldValue(i.customFieldValues, "customfield_10021"),
-                                        installerName = "",
-                                        dateApproved = GetCustomFieldValue(i.customFieldValues, "customfield_10050") == "Yes",
-                                        valuedCustomer = valuableCustomers.Any(v => v == i.summary),
-                                        region = GetCustomFieldValue(i.customFieldValues, "customfield_10070"),
-                                        hosted = GetCustomFieldValue(i.customFieldValues, "customfield_10140"),
-                                        ryo = GetCustomFieldValue(i.customFieldValues, "customfield_10091").Contains("RYO"),
-                                        security = GetCustomFieldValue(i.customFieldValues, "customfield_10060"),
-                                        caseList = GetCustomFieldValue(i.customFieldValues, "customfield_14800")
-                                    };
                     return installations;
                 case "URM":
                     // Create object list
+                    /*
                     installations = from i in issues
                                     select new Installation
                                     {
@@ -387,8 +368,8 @@ namespace ExLibris.JiraExtensions.Models
                                         serviceIncident = GetCustomFieldValue(i.customFieldValues, "customfield_10021"),
                                         installerName = ""
                                     };
-
-                    return installations;
+                    */
+                    return null;
 
             }
             return null;
@@ -407,17 +388,10 @@ namespace ExLibris.JiraExtensions.Models
                              select new Installer
                              {
                                  userName = c.userName,
+                                 displayName = c.displayName
                              };
 
             installers = installers.Distinct(new InstallerComparer()).OrderBy(i => i.userName);
-
-            // Populate display name for distinct installer list.
-            installers = from i in installers
-                         select new Installer
-                         {
-                             userName = i.userName,
-                             displayName = _jss.getUser(_token, i.userName).fullname
-                         };
 
             return installers;
         }
@@ -430,8 +404,8 @@ namespace ExLibris.JiraExtensions.Models
 
             // Get Sprint Information
             resp = JiraRestCall(
-                String.Format("{0}rest/greenhopper/1.0/xboard/work/allData?rapidViewId={1}",
-                _jiraPrefix, boardId));
+                String.Format("rest/greenhopper/1.0/xboard/work/allData?rapidViewId={1}",
+                boardId));
 
             foreach (dynamic sp in resp["sprintsData"]["sprints"])
             {
@@ -450,8 +424,8 @@ namespace ExLibris.JiraExtensions.Models
 
             // Get issues for this version via REST
             resp = JiraRestCall(
-                String.Format("{0}rest/api/2/search?maxResults=100&jql=sprint={1}+and+issueType=Bug",
-                _jiraPrefix, sprint.Id));
+                String.Format("rest/api/2/search?maxResults=100&jql=sprint={1}+and+issueType=Bug",
+                sprint.Id));
 
             List<JiraIssue> jiraIssues = JiraRestIssuesToList(resp["issues"]);
 
@@ -522,8 +496,8 @@ namespace ExLibris.JiraExtensions.Models
 
             // Get issues for this version via REST
             dynamic resp = JiraRestCall(
-                String.Format("{0}rest/api/2/search?maxResults=100&jql=project={1}+and+fixVersion=\"{2}\"+and+issueType=Bug", 
-                _jiraPrefix, project, versionName));
+                String.Format("rest/api/2/search?maxResults=100&jql=project={1}+and+fixVersion=\"{2}\"+and+issueType=Bug", 
+                project, versionName));
 
             List<JiraIssue> jiraIssues = JiraRestIssuesToList(resp["issues"]);
 
@@ -623,7 +597,6 @@ namespace ExLibris.JiraExtensions.Models
             return null;
         }
 
-
         #region Utilities
 
         private static string GetCustomFieldValue(RemoteCustomFieldValue[] customFieldValues, string fieldName)
@@ -665,6 +638,63 @@ namespace ExLibris.JiraExtensions.Models
             return days;
         }
 
+        private static String GetRestField(dynamic fields, String field, bool combo = false)
+        {
+
+            dynamic value;
+            if (fields.TryGetValue(field, out value))
+            {
+                if (combo)
+                {
+                    if (value != null) value = value["value"];
+                }
+                return Util.nvl(value, "");
+            }
+            else
+            {
+                return "";
+            }
+        }
+        
+        /// <summary>
+        /// Converts a Jira REST issue list to a list of Installations Issues
+        /// </summary>
+        /// <param name="issues">JSON issue list obtained as the result of a Jira REST call</param>
+        /// <returns>List of Installations</returns>
+        private static List<Installation> JiraRestIssuesToInstallationList(dynamic issues, List<String> valuableCustomers)
+        {
+            List<Installation> installations = new List<Installation>();
+
+            foreach (dynamic issue in issues)
+            {
+                installations.Add(new CustomerInstallation()
+                {
+                    key = issue["key"],
+                    summary = GetRestField(issue["fields"], "summary"),
+                    link = String.Format("{0}{1}/{2}", _jiraPrefix, "browse", issue["key"]),
+                    startDateText = GetRestField(issue["fields"],"customfield_10035"),
+                    duration = (int)decimal.Parse(Util.nvl(GetRestField(issue["fields"],"customfield_10036"), "1")),
+                    userName = issue["fields"]["assignee"]["name"],
+                    displayName = issue["fields"]["assignee"]["displayName"],
+                    product = issue["fields"]["components"].Length > 0 ? issue["fields"]["components"][0]["name"] : "",
+                    customerCode = issue["fields"]["summary"],
+                    installTask = GetRestField(issue["fields"],"customfield_10033", true),
+                    serviceIncident = GetRestField(issue["fields"],"customfield_10021"),
+                    installerName = "",
+                    dateApproved = GetRestField(issue["fields"],"customfield_10050", true) == "Yes",
+                    valuedCustomer = valuableCustomers.Any(v => v == issue["fields"]["summary"]),
+                    region = GetRestField(issue["fields"],"customfield_10070", true),
+                    hosted = GetRestField(issue["fields"],"customfield_10140", true),
+                    ryo = GetRestField(issue["fields"],"customfield_10091").Contains("RYO"),
+                    security = GetRestField(issue["fields"],"customfield_10060"),
+                    caseList = GetRestField(issue["fields"],"customfield_14800")
+
+                });
+            }
+
+            return installations;
+        }
+
         /// <summary>
         /// Converts a Jira REST issue list to a list of Jira Issues
         /// </summary>
@@ -694,6 +724,8 @@ namespace ExLibris.JiraExtensions.Models
         /// <returns>JSON response from the server</returns>
         private static dynamic JiraRestCall(string uri)
         {
+            if (!uri.StartsWith("rest")) uri = _jiraRestPrefix + uri;
+            uri = _jiraPrefix + uri;
             System.Web.Script.Serialization.JavaScriptSerializer json = new System.Web.Script.Serialization.JavaScriptSerializer();
             WebRequest req = WebRequest.Create(uri);
             // NetworkCredentials don't work because Jira doesn't do a 401 challenge

@@ -29,7 +29,15 @@ namespace ExLibris.JiraExtensions.Models
 
     public class JiraIssue
     {
-        public DateTime ResolutionDate { get; set; }
+        private DateTime resolutionDate;
+
+        public DateTime ResolutionDate { 
+            get { return resolutionDate; }
+            set {
+                if (value == null) resolutionDate = DateTime.MaxValue;
+                else resolutionDate = value;
+            } 
+        }
         public string IssueKey { get; set; }
     }
 

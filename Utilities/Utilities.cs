@@ -46,12 +46,16 @@ namespace ExLibris.JiraExtensions.Utilities
              * */
         }
 
-        public static string nvl(string val, string valifnull)
+        public static string nvl(object val, string valifnull)
         {
-            if (String.IsNullOrEmpty(val))
+            if (val == null )
+                return valifnull;
+
+            String str = val.ToString();
+            if (String.IsNullOrEmpty(str))
                 return valifnull;
             else
-                return val;
+                return str;
         }
 
 
