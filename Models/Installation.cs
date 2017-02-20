@@ -44,6 +44,7 @@ namespace ExLibris.JiraExtensions.Models
             set { _duration = value / 9; }
         }
         public string userName { get; set; }
+        public string displayName { get; set; }
         public string customerCode { get; set; }
         public string serviceIncident { get; set; }
         public string installerName { get; set; }

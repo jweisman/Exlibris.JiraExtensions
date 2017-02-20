@@ -16,5 +16,5 @@ The following modules are available:
 Requirements
 ------------
 
-The project is a C# ASP.MVC application with dependencies on Oracle Data Access and JSON.NET.
+The project is a C# ASP.MVC application with dependencies on Oracle Data Access and JSON.NET. To load this ASP.NET MVC 2.0 project in a newer version of Visual Studio, see helpful note [here](http://stackoverflow.com/questions/13424079/how-do-i-open-an-old-mvc-project-in-visual-studio-2012-or-visual-studio-2013).
 

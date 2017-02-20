@@ -90,7 +90,7 @@
       </year>      
     </holidays>
     <installers>
-      <installer userName="alonk"/>
+      <installer userName="ashrafh"/>
       <installer userName="davidc"/>
       <installer userName="ephraima"/>
       <installer userName="joshw"/>
@@ -100,6 +100,13 @@
       <installer userName="rudyy"/>
       <installer userName="idani"/>
       <installer userName="tomersha"/>
+      <installer userName="aminadavd"/>
+      <installer userName="itays"/>
+      <installer userName="yoseft"/>
+      <installer userName="natanb"/>
+      <installer userName="yotamh"/>
+      <installer userName="netah"/>
+	  <installer userName="evyatarr"/>
     </installers>
   </location>
   <location id="de">
