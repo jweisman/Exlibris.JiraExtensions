@@ -45,7 +45,8 @@
     <i>Double-click cell to create new installation<br />Alt-n to find next open slot</i></td>
     <td>Key:<br />
     <span style='background-color:#FFCC00'>Preferred Customer</span><br />
-    <span style='background-color:#66CC00'>Internal Customer</span>
+    <span style='background-color:#66CC00'>Internal Customer</span><br />
+    <span style='background-color:#FF99CC'>Cloud Production</span><br />
     </td>
     </tr>
     </table>

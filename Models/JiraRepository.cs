@@ -338,7 +338,8 @@ namespace ExLibris.JiraExtensions.Models
             if (String.IsNullOrEmpty(project))
                 throw new Exception("No project specified");
 
-            string query = HttpUtility.UrlEncode(String.Format("project = {0} and issueType = Installation and resolution = Unresolved and \"Start Date\" >= -14d", project));
+            string cpgQuery = project == "INST" ? " or (project = CPG and issueType = Task and labels = CPG_Project) " : "";
+            string query = HttpUtility.UrlEncode(String.Format("((project = {0} and issueType = Installation) {1}) and resolution = Unresolved and \"Start Date\" >= -14d", project, cpgQuery));
             string fields = "key,resolutiondate,summary,components,customfield_10035,customfield_10036,assignee,customfield_10033,customfield_10021,customfield_10050,customfield_10070,customfield_10140,customfield_10091,customfield_10060,customfield_14800";
             dynamic resp = JiraRestCall("/search?maxResults=1000&fields=" + fields + "&jql=" + query);
 

@@ -23,6 +23,9 @@ namespace ExLibris.JiraExtensions.Utilities
                     backgroundColor = "FFCC00";
                 else if (installation.region == "Internal")
                     backgroundColor = "66CC00";
+                else if (installation.key.StartsWith("CPG"))
+                    backgroundColor = "FF99CC";
+
                 html = String.Format("<span style='font-style:{0}; background-color:#{10}'><a href='{1}'>{2}</a>: {3} {4} @ {5} [{6}]{7}{8}{9}</span><br/><hr/>",
                     installation.dateApproved ? "normal" : "italic", installation.link, installation.key, installation.product,
                     installation.installTask, installation.customerCode, SILink(installation.serviceIncident, installation.cases),
