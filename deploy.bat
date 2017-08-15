@@ -1,2 +1,2 @@
-xcopy C:\inetpub\wwwroot\jiraextentions \\il-jiraapp01\c$\inetpub\wwwroot\jiraextensions\ /D /S /Y /EXCLUDE:C:\inetpub\wwwroot\jiraextentions\exclude.txt 
-xcopy C:\inetpub\wwwroot\jiraextentions \\il-iapps04\jiraextensions\ /D /S /Y /EXCLUDE:C:\inetpub\wwwroot\jiraextentions\exclude.txt 
+xcopy C:\inetpub\DotNet\Exlibris.JiraExtensions \\10.1.235.169\c$\inetpub\wwwroot\jiraextensions\ /D /S /Y /EXCLUDE:C:\inetpub\DotNet\Exlibris.JiraExtensions\exclude.txt 
+REM #xcopy C:\inetpub\wwwroot\jiraextentions \\il-iapps04\jiraextensions\ /D /S /Y /EXCLUDE:C:\inetpub\wwwroot\jiraextentions\exclude.txt 
